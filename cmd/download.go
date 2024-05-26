@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Souvikns/rpm/lib"
-	"github.com/Souvikns/rpm/lib/downloader"
+	"github.com/Souvikns/prpm/lib/pkg"
+	"github.com/Souvikns/prpm/lib/registry"
 	"github.com/spf13/cobra"
 )
 
@@ -13,21 +13,20 @@ var downloadCmd = &cobra.Command{
 	Use:   "download",
 	Short: "Download a rom hack from registry",
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.LoadLockFile()
-		lib.LoadRegistryFile()
+		pkg.LoadPackageFile()
+		registry.LoadRegistryFile()
 		if len(args) != 0 {
 			romHackName := args[0]
-			fmt.Println(romHackName)
-			ok := lib.LockFile.IsPresent(romHackName)
+			ok := pkg.PkgFile.IsPresent(romHackName)
 			if !ok {
-				v, _ := lib.RegistryFile[romHackName].Latest()
-				downloader.Download(romHackName, v)
-				lib.LockFile.Write(romHackName, v)
+				v, _ := registry.RegistryFile[romHackName].Latest()
+				registry.Download(romHackName, v)
+				pkg.PkgFile.Write(romHackName, v)
 			}
 		}
-		for r, v := range lib.LockFile.Roms {
+		for r, v := range pkg.PkgFile.Roms {
 			fmt.Println("Downloading " + r + v)
-			downloader.Download(r, v)
+			registry.Download(r, v)
 		}
 		os.Exit(0)
 	},

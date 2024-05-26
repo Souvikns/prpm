@@ -1,4 +1,4 @@
-module github.com/Souvikns/rpm
+module github.com/Souvikns/prpm
 
 go 1.22.3
 

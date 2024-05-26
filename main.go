@@ -1,6 +1,6 @@
 package main
 
-import "github.com/Souvikns/rpm/cmd"
+import "github.com/Souvikns/prpm/cmd"
 
 
 func main() {
